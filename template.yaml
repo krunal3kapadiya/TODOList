@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  TaskManagerApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+
+  TaskManagerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.9
+      CodeUri: ./
+      Handler: lambda_code.handler
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        GetTaskEvent:
+          Type: Api
+          Properties:
+            RestApiId: 
+              Ref: TaskManagerApi
+            Path: /tasks
+            Method: GET
+        CreateTaskEvent:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: TaskManagerApi
+            Path: /tasks
+            Method: POST
+
+  TaskManagerTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: task_list2
+      AttributeDefinitions:
+        - AttributeName: task_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: task_id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+Outputs:
+  ApiURL:
+    Description: "API endpoint URL"
+    Value:
+      Fn::Sub:
+        "https://${TaskManagerApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/tasks"
+  TableName:
+    Description: "DynamoDB table name"
+    Value: "task_list2"

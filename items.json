@@ -1,0 +1,20 @@
+[
+  {
+    "task_id": "1",
+    "title": "Complete project",
+    "description": "Finish the project by the end of the week",
+    "due_date": "2022-05-15"
+  },
+  {
+    "task_id": "2",
+    "title": "Submit report",
+    "description": "Submit the quarterly report to the manager",
+    "due_date": "2022-05-20"
+  },
+  {
+    "task_id": "3",
+    "title": "Attend meeting",
+    "description": "Attend the team meeting on Monday",
+    "due_date": "2022-05-10"
+  }
+]
